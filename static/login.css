@@ -1,0 +1,82 @@
+.login-box {
+    width: 300px;
+    }
+
+.login-box h2 {
+    margin: 0 0 20px;
+    padding: 0;
+    }
+
+.user-box {
+    position: relative;
+}
+
+.user-box input {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #999;
+    margin-bottom: 30px;
+    border: none;
+    border-bottom: 1px solid #777;
+    outline: none;
+    background: transparent;
+}
+
+.user-box label {
+    position: absolute;
+    top:0;
+    left: 0;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #777;
+    pointer-events: none;
+    transition: 0.5s;
+}
+
+.user-box input:focus ~ label,
+.user-box input:valid ~ label {
+    top: -20px;
+    left: 0;
+    color: #333;
+    font-size: 12px;
+}
+
+.input-bottom {
+    background: #3498db;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.input-bottom:hover {
+    background-color: #2980b9;
+}
+
+.alert {
+    margin-top: 20px;
+}
+
+/* css for saved data information */
+.user-box input:-webkit-autofill,
+.user-box input:-webkit-autofill:hover,
+.user-box input:-webkit-autofill:focus,
+.user-box input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px transparent inset !important; /* Adjust the background color */
+    -webkit-text-fill-color: #999 !important; /* Adjust the text color */
+    font-size: 16px !important; /* Adjust the font size */
+    transition: background-color 5000s ease-in-out 0s; /* Smooth background transition */
+}
+
+/* Targeting Firefox */
+.user-box input:-moz-autofill,
+.user-box input:-moz-autofill:hover,
+.user-box input:-moz-autofill:focus,
+.user-box input:-moz-autofill:active {
+    box-shadow: 0 0 0 30px transparent inset !important; /* Adjust the background color */
+    text-fill-color: #999 !important; /* Adjust the text color */
+    font-size: 16px !important; /* Adjust the font size */
+}
+
+/* end-of css for saved data information */

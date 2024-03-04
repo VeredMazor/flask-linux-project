@@ -1,0 +1,138 @@
+body, html {
+  height:100%;
+  margin: 0;
+  background-color: #151519;
+
+}
+
+.nav-dashboard {
+    background-color: rgba(0,0,0,0.8);
+    color: white;
+}
+
+.nav-button {
+    color: white;
+}
+h2,h3,p {
+    color: #5ccfc1;
+    margin-bottom: 2%";
+}
+
+@media screen and (max-width: 992px) {
+
+  .row-offcanvas {
+    position: relative;
+    -webkit-transition: all 0.25s ease-out;
+    -moz-transition: all 0.25s ease-out;
+    transition: all 0.25s ease-out;
+  }
+
+  .row-offcanvas-left
+  .sidebar-offcanvas {
+    left: -33%;
+  }
+
+  .row-offcanvas-left.active {
+    left: 33%;
+    margin-left: -6px;
+  }
+
+  .sidebar-offcanvas {
+    position: absolute;
+    top: 0;
+    width: 33%;
+    height: 100%;
+  }
+}
+
+label {
+    color: white !important;
+    float: left;
+}
+/*
+ * Off Canvas wider at sm breakpoint
+ * --------------------------------------------------
+ */
+@media screen and (max-width: 34em) {
+  .row-offcanvas-left
+  .sidebar-offcanvas {
+    left: -45%;
+  }
+
+  .row-offcanvas-left.active {
+    left: 45%;
+    margin-left: -6px;
+  }
+
+  .sidebar-offcanvas {
+    width: 45%;
+  }
+}
+
+.card {
+    overflow:hidden;
+}
+
+.card-body .rotate {
+    z-index: 8;
+    float: right;
+    height: 100%;
+}
+
+.card-body .rotate i {
+    color: rgba(20, 20, 20, 0.15);
+    position: absolute;
+    left: 0;
+    left: auto;
+    right: -10px;
+    bottom: 0;
+    display: block;
+    -webkit-transform: rotate(-44deg);
+    -moz-transform: rotate(-44deg);
+    -o-transform: rotate(-44deg);
+    -ms-transform: rotate(-44deg);
+    transform: rotate(-44deg);
+}
+
+
+.chartjs-wrapper {
+  margin: 0 auto;
+  width: 32vw;
+  height: auto;
+  padding: 20px;
+}
+
+.card-bg {
+    background: rgba(0,0,0,1);
+    box-shadow: 0 10px 10px rgba(0,0,0,0.8);
+
+}
+
+.center {
+  text-align: center;
+}
+
+.page-content {
+    min-height: 100%;
+    /* Use padding-bottom to push the footer down but ensure it's the same height as the footer */
+    padding-bottom: 60px; /* Adjust this value based on the footer's height */
+    box-sizing: border-box; /* Ensures padding does not add to the total height */
+}
+
+/* Sticky footer styles */
+footer {
+    position: fixed; /* Fixed positioning to "stick" it at the bottom */
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    max-height: 5%;
+    background-color: rgba(0,0,0,0.8);
+    color: #fff;
+    text-align: center;
+    padding: 10px 0; /* Some padding */
+    border-radius: 20px 20px 0 0; /* Rounded corners at the top */
+}
+
+.sparkline * {
+  color: white;
+}
