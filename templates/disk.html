@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block head %}
+Disk Monitoring
+{% endblock %}
+{% block content %}
+
+<div id="mem_cache"></div>
+<!-- Corrected scrript tag for jQuery inclusion -->
+
+<div class="row">
+    <div class="col main pt-5 mt-3">
+    <h2>Disk Live Data</h2>
+
+
+            <div class="row my-4">
+
+                <div class="col-lg-9 col-md-8">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead class="thead-inverse">
+                                <tr style="color: white">
+                                    <th>Filesystem</th>
+                                    <th>Size</th>
+                                    <th>Used</th>
+                                    <th>Available</th>
+                                    <th>Use%</th>
+                                    <th>Mounted on</th>
+                                </tr>
+                            </thead>
+
+                                <tbody id="disk_table_body" style="color: white">
+                                    <!-- Data will be dynamically added here -->
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!--/row-->
+
+
+        </div>
+        <!--/main col-->
+    </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    function ajaxCall() {
+        $.ajax({
+            url: 'http://127.0.0.1:5001/refresh_disk',
+            type: "GET",
+            success: function (data) {
+                console.log(data)
+                // Clear the table body first
+                $('#disk_table_body').empty();
+
+                // Loop through the data and append rows to the table
+                data.all_disk.forEach(function(disk) {
+
+                    $('#disk_table_body').append(`
+                        <tr>
+                            <td>${disk['Filesystem']}</td>
+                            <td>${disk['Size']}</td>
+                            <td>${disk['Used']}</td>
+                            <td>${disk['Avail']}</td>
+                            <td>${disk['Use']}</td>
+                            <td>${disk['Mounted_on']}</td>
+                        </tr>
+                    `);
+                });
+            },
+            error: function (error) {
+                console.log("Error", error);
+            }
+        });
+    }
+
+    // Call the AJAX function initially and then at intervals
+    ajaxCall();
+    setInterval(ajaxCall, 5000);
+</script>
+
+{% endblock %}

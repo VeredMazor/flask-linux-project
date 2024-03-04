@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block head %}
+SWAP Monitoring
+{% endblock %}
+{% block content %}
+<div class="row">
+    <!-----------SWAP---------->
+    <div class="col main pt-5 mt-3">
+    <h2>SWAP Live Data</h2>
+            <div class="row mb-3">
+                <div class="col-xl-3 col-sm-6 py-2">
+                    <div class="card card-bg h-100" style="color: #66bdef; background-color: black;">
+                        <div class="card-body card-bg">
+                            <div class="rotate">
+                                <i class="fa fa-user fa-4x"></i>
+                            </div>
+                            <h6 class="text-uppercase">Total MB</h6>
+                            <h1 class="display-4" id="swap_total">{{swap['total']}}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 py-2">
+                    <div class="card card-bg h-100" style="color: #5ccfc1; background-color: black;">
+                        <div class="card-body card-bg">
+                            <div class="rotate">
+                                <i class="fa fa-list fa-4x"></i>
+                            </div>
+                            <h6 class="text-uppercase">Free MB</h6>
+                            <h1 class="display-4" id="swap_free">{{swap['free']}}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 py-2">
+                    <div class="card card-bg h-100" style="color: #fe7096; background-color: black;">
+                        <div class="card-body card-bg">
+                            <div class="rotate">
+                                <i class="fa fa-twitter fa-4x"></i>
+                            </div>
+                            <h6 class="text-uppercase">Used MB</h6>
+                            <h1 class="display-4" id="swap_used">{{swap['used']}}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 py-2">
+                    <div class="card card-bg h-100" style="color: #ffa496; background-color: black;">
+                        <div class="card-body card-bg">
+                            <div class="rotate">
+                                <i class="fa fa-share fa-4x"></i>
+                            </div>
+                            <h6 class="text-uppercase">Available MB</h6>
+                            <h1 class="display-4" id="swap_avail">{{swap['avail']}}</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+        </div>
+
+<!-- SWAP graf -->
+<!-- Include Chart.js and jQuery -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<div class="chart-container">
+    <canvas id="myChart" style=" margin: 5%"></canvas>
+</div>
+
+<script>
+    var myChart; // Declare myChart in the global scope
+
+    // Function to update the chart with data
+    function updateChart(data) {
+        // Update chart data
+        myChart.data.labels = data.all_swap.map(function (entry) {
+            return entry.dt;
+        });
+        myChart.data.datasets[0].data = data.all_swap.map(function (entry) {
+            return entry.used;
+        });
+        myChart.update();
+    }
+
+    // Function to make AJAX call and update chart data
+    function ajaxCall() {
+        $.ajax({
+            url: 'http://127.0.0.1:5001/refresh_swap',
+            type: "GET",
+            success: function (data) {
+                console.log(data);
+                // Update chart with live data
+                updateChart(data);
+
+                // Update HTML elements with live data
+                document.getElementById('swap_used').innerText = data.swap['used'];
+                document.getElementById('swap_free').innerText = data.swap['free'];
+                document.getElementById('swap_total').innerText = data.swap['total'];
+                document.getElementById('swap_avail').innerText = data.swap['avail'];
+            },
+            error: function (error) {
+                console.log("Error", error);
+            }
+        });
+    }
+
+    // Create the chart after DOMContentLoaded
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get the canvas element
+        var ctx = document.getElementById("myChart").getContext("2d");
+        // Create the chart
+        myChart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: [{% for entry in all_swap %} "{{ entry.dt }}", {% endfor %}],
+                datasets: [{
+                    label: "SWAP",
+                    data: [{% for entry in all_swap %} {{ entry.used }}, {% endfor %}],
+                    fill: false,
+                    borderColor: "rgb(75, 192, 192)",
+                    tension: 0.1
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'white' // Set legend label color to white
+                        }
+                    }
+                },
+                elements: {
+                    line: {
+                        borderColor: 'white', // Set line color to white
+                        fill: false,
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: 'white' // Set X-axis tick color to white
+                        },
+                        grid: {
+                            color: "#757575", // Set grid line color to white
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: 'white' // Set Y-axis tick color to white
+                        },
+                        grid: {
+                            color: "#757575", // Set grid line color to white
+                        }
+                    }
+                }
+            }
+        });
+        // Call ajaxCall function initially to fetch live data
+        ajaxCall();
+        // Call ajax every 10 seconds
+        setInterval(ajaxCall, 10000);
+    });
+</script>
+<!-- end SWAP graff -->
+
+{% endblock %}

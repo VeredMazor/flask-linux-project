@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block head %}
+Processes Monitoring
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col main pt-5 mt-3">
+    <h2>Processes Live Data</h2>
+
+    <!---table---->
+
+<!----
+            <a id="features"></a>
+            <hr>
+            <p class="lead mt-5">
+                Are you ready for Bootstap 4? It's the 4th generation of this popular responsive framework. Bootstrap 4 will include some interesting
+                new features such as flexbox, 5 grid sizes (now including xl), cards, `em` sizing, CSS normalization (reboot) and larger font
+                sizes.
+            </p>
+            <form>
+                <p>
+                    %CPU
+                </p>
+                <p>
+                    %MEM
+                </p>
+            </form>
+--->
+            <div class="row my-4">
+
+                <div class="col-lg-9 col-md-8">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead class="thead-inverse">
+                                <tr style="color: white">
+                                    <th>DATE</th>
+                                    <th>PID</th>
+                                    <th>USER</th>
+                                    <th>%CPU</th>
+                                    <th>%MEM</th>
+                                    <th>S</th>
+                                    <th>COMMAND</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for p in proc %}
+                                <tr style="color: white">
+                                    <td>{{p['dt']}}</td>
+                                    <td>{{p['PID']}}</td>
+                                    <td>{{p['USER']}}</td>
+                                    <td>{{p['%CPU']}}</td>
+                                    <td>{{p['%MEM']}}</td>
+                                    <td>{{p['S']}}</td>
+                                    <td>{{p['COMMAND']}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!--/row-->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function(){
+    function refreshProcessData() {
+        $.ajax({
+            url: '/refresh_process',
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                var rows = '';
+                $.each(data, function(index, p){
+                    rows += '<tr style="color: white">' +
+                            '<td>' + p['dt'] + '</td>' +
+                            '<td>' + p['PID'] + '</td>' +
+                            '<td>' + p['USER'] + '</td>' +
+                            '<td>' + p['%CPU'] + '</td>' +
+                            '<td>' + p['%MEM'] + '</td>' +
+                            '<td>' + p['S'] + '</td>' +
+                            '<td>' + p['COMMAND'] + '</td>' +
+                            '</tr>';
+                });
+                $('table.table tbody').html(rows);
+            },
+            error: function(xhr, status, error) {
+                console.log("Error: " + error);
+            }
+        });
+    }
+
+    setInterval(refreshProcessData, 10000);
+});
+</script>
+
+
+
+
+
+        </div>
+        <!--/main cols-->
+    </div>
+{% endblock %}
